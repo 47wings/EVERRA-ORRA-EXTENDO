@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EOE – Everra Orra Extendo</title>
+  <style>
+    :root {
+      --bg: #0b0b10;
+      --card: #131321;
+      --card2: #17172a;
+      --text: #f2f2ff;
+      --muted: #b9b9d6;
+      --accent: #ff4fb6;
+      --accent2: #53ffd4;
+      --warn: #ffcc66;
+      --bad: #ff5c5c;
+      --good: #6bff7a;
+      --stroke: rgba(255,255,255,.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(255,79,182,.22), transparent 55%),
+                  radial-gradient(1000px 700px at 85% 25%, rgba(83,255,212,.16), transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.35;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+    }
+    header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: .4px;
+      color: var(--muted);
+      font-weight: 650;
+    }
+    .pill {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(255,255,255,.75);
+      border: 1px solid var(--stroke);
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.03);
+    }
+
+    .bigBtn {
+      width: 100%;
+      border: 1px solid rgba(255,79,182,.35);
+      background: linear-gradient(135deg, rgba(255,79,182,.18), rgba(83,255,212,.12));
+      color: var(--text);
+      padding: 22px 18px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      cursor: pointer;
+      transition: transform .05s ease, border-color .2s ease, background .2s ease;
+      user-select: none;
+    }
+    .bigBtn:active { transform: translateY(1px) scale(.997); }
+    .grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 860px) {
+      .grid { grid-template-columns: 1.3fr .7fr; }
+    }
+    .card {
+      background: rgba(19,19,33,.9);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+    .card h2 {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+    .opt {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid var(--stroke);
+      border-radius: 14px;
+      padding: 12px 12px;
+    }
+    .optHead {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+    }
+    .tag.everra { border-color: rgba(83,255,212,.35); }
+    .tag.orra { border-color: rgba(255,204,102,.35); }
+    .tag.extendo { border-color: rgba(255,92,92,.35); }
+    .score {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(255,255,255,.65);
+    }
+    .optBody {
+      font-size: 15px;
+    }
+    .optBody .names {
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+    .optBody .sep {
+      opacity: .6;
+      padding: 0 6px;
+    }
+    .muted { color: var(--muted); }
+
+    .players {
+      display: grid;
+      gap: 12px;
+    }
+    .playerRow {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+    }
+    .playerTitle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .playerName {
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: .3px;
+    }
+    .choicePill {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      color: rgba(255,255,255,.72);
+      background: rgba(255,255,255,.02);
+    }
+    .btnRow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .pickBtn {
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 10px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform .05s ease, border-color .2s ease, background .2s ease;
+      user-select: none;
+    }
+    .pickBtn:active { transform: translateY(1px); }
+    .pickBtn[data-choice="Everra"].active { border-color: rgba(83,255,212,.55); background: rgba(83,255,212,.08); }
+    .pickBtn[data-choice="Orra"].active { border-color: rgba(255,204,102,.6); background: rgba(255,204,102,.08); }
+    .pickBtn[data-choice="Extendo"].active { border-color: rgba(255,92,92,.6); background: rgba(255,92,92,.08); }
+
+    .log {
+      max-height: 360px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+    .logItem {
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.02);
+      border-radius: 14px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .logItem .t {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(255,255,255,.6);
+      margin-bottom: 6px;
+    }
+    .logItem .l {
+      font-size: 13px;
+      color: rgba(255,255,255,.82);
+    }
+    .footerRow {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .smallBtn {
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 750;
+      user-select: none;
+    }
+    .smallBtn:active { transform: translateY(1px); }
+    .note {
+      font-size: 12px;
+      color: rgba(255,255,255,.55);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <h1>EOE – Everra, Orra, Extendo</h1>
+      <div class="pill" id="statusPill">Bereit</div>
+    </header>
+
+    <button class="bigBtn" id="eoeBtn">Everra Orra Extendo</button>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Runde</h2>
+        <div class="options" id="options"></div>
+
+        <div class="footerRow">
+          <div class="note">
+            Balancing: alle drei Optionen haben exakt gleiche Punktzahl.
+          </div>
+          <button class="smallBtn" id="copyBtn">Runde kopieren</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Gurik &amp; Joggel</h2>
+        <div class="players">
+          <div class="playerRow" data-player="Gurik">
+            <div class="playerTitle">
+              <div class="playerName">Gurik</div>
+              <div class="choicePill" id="pillGurik">—</div>
+            </div>
+            <div class="btnRow">
+              <button class="pickBtn" data-player="Gurik" data-choice="Everra">Everra</button>
+              <button class="pickBtn" data-player="Gurik" data-choice="Orra">Orra</button>
+              <button class="pickBtn" data-player="Gurik" data-choice="Extendo">Extendo</button>
+            </div>
+          </div>
+
+          <div class="playerRow" data-player="Joggel">
+            <div class="playerTitle">
+              <div class="playerName">Joggel</div>
+              <div class="choicePill" id="pillJoggel">—</div>
+            </div>
+            <div class="btnRow">
+              <button class="pickBtn" data-player="Joggel" data-choice="Everra">Everra</button>
+              <button class="pickBtn" data-player="Joggel" data-choice="Orra">Orra</button>
+              <button class="pickBtn" data-player="Joggel" data-choice="Extendo">Extendo</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <h2>Log</h2>
+        <div class="log" id="log"></div>
+
+        <div class="footerRow">
+          <button class="smallBtn" id="saveLogBtn">Entscheidung loggen</button>
+          <button class="smallBtn" id="clearLogBtn">Log löschen</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+<script>
+/**
+ * EOE – Daten (einfach erweiterbar)
+ * Regelbasis:
+ * - Mädchen-Personenpunkte: SehrGute=1, Gute=2, Schlechte=3, Horror=4
+ * - Jungs-Personenpunkte: pro Vorkommen zufällig 3 oder 4
+ * - Situationenpunkte: Gut=1, Neutral=2, Schlecht=3 (für beide Geschlechter)
+ * - Pro Option 1-3 Personen (1 häufiger, 3 seltener)
+ * - Jede Runde: Everra/Orra/Extendo müssen exakt gleiche Gesamtpunkte haben
+ * - "knacken" wird NICHT genutzt; alles heißt ulderaken
+ * - "dapokakt" korrekt: "Dass [Name] unsere Drihs dapokakt"
+ */
+
+const DATA = {
+  girls: {
+    SehrGute: ["Eule","Das Erdbeer-Söckchen","Karür","Luige","Aligha","Maggi","Das Göttwunder","Die Göttqueen","Lovis","Noga","Quetscherin","Greiferin","Soja-Tanke","Die Edgerin","Fashion MF","Chromi"],
+    Gute: ["Imogher","Venen Chockerin","Schnattereir","Plattgött"],
+    Schlechte: ["Fronzi","Die Bärtige","Paulighe","Die Milchtankstelle"],
+    Horror: ["A.W.","5Tonnen","Die Beutelzupferin"]
+  },
+  boys: ["Der HB","Fihclor","JK","Gyaddicin","Glutsch","Andreir","Mr. Mayonnaise","Weith","Doktor Cremà"],
+
+  situations: {
+    girls: {
+      Gut: [
+        "Muh ulderaken (Senza Vide)",
+        "Gött ulderaken (Senza Vide)",
+        "Dass {P} unsere Drihs dapokakt",          // dapokakt korrekt
+        "Dass {P} unsere Drihs apolakt"
+      ],
+      Neutral: [
+        "Muh ulderaken",
+        "Gött ulderaken"
+      ],
+      Schlecht: [
+        "Gött apolaken (Conola Vide)",
+        "Muh apolaken (Conola Vide)"
+      ]
+    },
+    boys: {
+      Gut: [
+        "Dass wir Drih apolakt kriegen"
+      ],
+      Neutral: [
+        "Drih dapokakt bekommen",
+        "Gött ulderaken"
+      ],
+      Schlecht: [
+        "Drih apolaken",
+        "Gött apolaken",
+        "Dass wir den Gött ulderakt kriegen"
+      ]
+    }
+  }
+};
+
+const POINTS = {
+  girlTier: { SehrGute: 1, Gute: 2, Schlechte: 3, Horror: 4 },
+  situationTier: { Gut: 1, Neutral: 2, Schlecht: 3 }
+};
+
+// 90/10 Wahrscheinlichkeit Mädchen/Jungs (nur Wahrscheinlichkeit, nicht Anzahl)
+const PROB_GIRL = 0.90;
+
+// Personenanzahl pro Option: 1 häufiger, 2 seltener, 3 selten
+function rollPeopleCount() {
+  const r = Math.random();
+  if (r < 0.75) return 1;
+  if (r < 0.95) return 2;
+  return 3;
+}
+
+// Helper
+function choice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function uniqueSample(arr, k) {
+  if (k >= arr.length) return shuffle(arr);
+  return shuffle(arr).slice(0, k);
+}
+
+function flattenGirls() {
+  const out = [];
+  for (const tier of Object.keys(DATA.girls)) {
+    for (const name of DATA.girls[tier]) out.push({ name, tier });
+  }
+  return out;
+}
+
+const ALL_GIRLS = flattenGirls();
+
+function rollBoyPoints() {
+  return (Math.random() < 0.5) ? 3 : 4;
+}
+
+function formatNames(names) {
+  return names.join(" + ");
+}
+
+function pickSituation(gender, tier, personLeadName) {
+  const list = DATA.situations[gender][tier];
+  let s = choice(list);
+  // Platzhalter {P} nur bei Girls-Situationen die Person braucht
+  s = s.replaceAll("{P}", personLeadName || "sie");
+  return s;
+}
+
+function generateOptionWithTarget(targetScore) {
+  // versuche eine Option zu bauen, die exakt targetScore erreicht
+  // gibt null zurück wenn nicht gefunden
+  for (let attempt = 0; attempt < 2500; attempt++) {
+    const wantGirl = Math.random() < PROB_GIRL;
+    const gender = wantGirl ? "girls" : "boys";
+
+    const count = rollPeopleCount();
+
+    let names = [];
+    let personPoints = 0;
+
+    if (gender === "girls") {
+      const picks = uniqueSample(ALL_GIRLS, count);
+      names = picks.map(p => p.name);
+      personPoints = picks.reduce((sum, p) => sum + POINTS.girlTier[p.tier], 0);
+
+      // Situation tier wählen
+      const neededSitPoints = targetScore - personPoints;
+      const sitTier = Object.keys(POINTS.situationTier).find(t => POINTS.situationTier[t] === neededSitPoints);
+      if (!sitTier) continue;
+
+      const situation = pickSituation("girls", sitTier, names[0]);
+      return {
+        gender: "girls",
+        names,
+        situation,
+        points: targetScore
+      };
+    } else {
+      // Boys
+      const picks = uniqueSample(DATA.boys, count);
+      names = picks.slice();
+
+      // pro Junge separat 3 oder 4
+      const boyRolls = names.map(() => rollBoyPoints());
+      personPoints = boyRolls.reduce((a,b) => a+b, 0);
+
+      const neededSitPoints = targetScore - personPoints;
+      const sitTier = Object.keys(POINTS.situationTier).find(t => POINTS.situationTier[t] === neededSitPoints);
+      if (!sitTier) continue;
+
+      const situation = pickSituation("boys", sitTier, null);
+      return {
+        gender: "boys",
+        names,
+        situation,
+        points: targetScore,
+        boyRolls
+      };
+    }
+  }
+  return null;
+}
+
+function generateRoundBalanced() {
+  // Zielscore suchen, der 3 Optionen möglich macht
+  // Score theoretisch 2..15, wir probieren random bis es klappt
+  for (let outer = 0; outer < 250; outer++) {
+    const targetScore = 2 + Math.floor(Math.random() * 14); // 2..15
+
+    const everra = generateOptionWithTarget(targetScore);
+    if (!everra) continue;
+    const orra = generateOptionWithTarget(targetScore);
+    if (!orra) continue;
+    const extendo = generateOptionWithTarget(targetScore);
+    if (!extendo) continue;
+
+    return { targetScore, everra, orra, extendo };
+  }
+  return null;
+}
+
+// UI state
+let currentRound = null;
+let picks = { Gurik: null, Joggel: null };
+
+const optionsEl = document.getElementById("options");
+const statusPill = document.getElementById("statusPill");
+const logEl = document.getElementById("log");
+const pillGurik = document.getElementById("pillGurik");
+const pillJoggel = document.getElementById("pillJoggel");
+
+function setStatus(txt) { statusPill.textContent = txt; }
+
+function renderRound(round) {
+  optionsEl.innerHTML = "";
+  const rows = [
+    { key: "Everra", data: round.everra, cls: "everra" },
+    { key: "Orra", data: round.orra, cls: "orra" },
+    { key: "Extendo", data: round.extendo, cls: "extendo" },
+  ];
+
+  for (const r of rows) {
+    const div = document.createElement("div");
+    div.className = "opt";
+    div.innerHTML = `
+      <div class="optHead">
+        <div class="tag ${r.cls}">${r.key}</div>
+        <div class="score">Score: ${round.targetScore}</div>
+      </div>
+      <div class="optBody">
+        <span class="names">${escapeHtml(formatNames(r.data.names))}</span>
+        <span class="sep">—</span>
+        <span class="muted">${escapeHtml(r.data.situation)}</span>
+      </div>
+    `;
+    optionsEl.appendChild(div);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function resetPicksUI() {
+  picks = { Gurik: null, Joggel: null };
+  pillGurik.textContent = "—";
+  pillJoggel.textContent = "—";
+  document.querySelectorAll(".pickBtn").forEach(b => b.classList.remove("active"));
+}
+
+function startNewRound() {
+  setStatus("Generiere…");
+  resetPicksUI();
+
+  const r = generateRoundBalanced();
+  if (!r) {
+    setStatus("Fehler: keine Runde gefunden");
+    optionsEl.innerHTML = `<div class="opt"><div class="optBody">Konnte keine balancierte Runde generieren. (Bitte nochmal drücken.)</div></div>`;
+    return;
+  }
+  currentRound = r;
+  renderRound(r);
+  setStatus("Runde bereit");
+}
+
+document.getElementById("eoeBtn").addEventListener("click", startNewRound);
+
+document.querySelectorAll(".pickBtn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const player = btn.dataset.player;
+    const choiceKey = btn.dataset.choice;
+
+    picks[player] = choiceKey;
+
+    // toggle active states in that player's row
+    document.querySelectorAll(`.pickBtn[data-player="${player}"]`).forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    if (player === "Gurik") pillGurik.textContent = choiceKey;
+    if (player === "Joggel") pillJoggel.textContent = choiceKey;
+  });
+});
+
+document.getElementById("saveLogBtn").addEventListener("click", () => {
+  if (!currentRound) return;
+
+  const t = new Date();
+  const stamp = t.toLocaleString("de-DE");
+
+  const line = document.createElement("div");
+  line.className = "logItem";
+  line.innerHTML = `
+    <div class="t">${escapeHtml(stamp)} · Score ${currentRound.targetScore}</div>
+    <div class="l"><strong>Gurik:</strong> ${escapeHtml(picks.Gurik || "—")} · <strong>Joggel:</strong> ${escapeHtml(picks.Joggel || "—")}</div>
+  `;
+  logEl.prepend(line);
+  setStatus("Geloggter Move");
+});
+
+document.getElementById("clearLogBtn").addEventListener("click", () => {
+  logEl.innerHTML = "";
+  setStatus("Log geleert");
+});
+
+document.getElementById("copyBtn").addEventListener("click", async () => {
+  if (!currentRound) return;
+
+  const txt =
+`Everra:
+${formatNames(currentRound.everra.names)} — ${currentRound.everra.situation}
+
+Orra:
+${formatNames(currentRound.orra.names)} — ${currentRound.orra.situation}
+
+Extendo:
+${formatNames(currentRound.extendo.names)} — ${currentRound.extendo.situation}
+
+Score: ${currentRound.targetScore}
+Gurik: ${picks.Gurik || "—"} | Joggel: ${picks.Joggel || "—"}
+`;
+  try {
+    await navigator.clipboard.writeText(txt);
+    setStatus("Kopiert");
+  } catch {
+    setStatus("Kopieren ging nicht");
+  }
+});
+
+// Autostart: sofort eine Runde beim Öffnen
+startNewRound();
+</script>
+</body>
+</html>
